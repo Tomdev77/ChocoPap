@@ -1,0 +1,243 @@
+article{
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: -20% 15% 15% 15%;
+}
+
+.containerForm{
+
+
+    width: 350px !important;
+    height: 550px;
+    border: solid 1px  ;
+    margin-top: 25% !important;
+    position: sticky!important;
+    top: 95px !important;
+    border-radius: 5px;
+    background-color: rgb(202, 202, 202);
+    color: rgb(10, 10, 10);
+    padding: 5px 5px 5px 5px;
+    margin-left: 8%;
+    margin-right: 10%;
+    
+}
+  
+h4{
+
+    font-size: 20px;
+    font-weight: 500;
+
+    
+}
+
+.filter{
+
+    width: 50px;
+    display: flex;
+}
+
+.bannerrightside{
+
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px 15px 15px 15px;
+    width: 50px;
+
+}
+
+
+
+.containerfilterprices{
+
+    display: flex;
+    padding: 5px 5px 5px 15px;
+    flex-direction: column;
+    float: right;
+    margin-right: 15%;
+
+}
+    
+
+
+section{
+
+    width: 350px;
+    border: 1px solid #000000;
+    margin: 15px;
+    padding: 20px;
+    background-color: #050505;
+    border-radius: 7px;
+    opacity: 0.5;
+    color: white;
+    -webkit-transform: scale(1);
+	transform: scale(1);
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+    margin-bottom: 5%;
+    margin-left: 15%;
+
+
+}
+
+section h2, section p{
+
+    text-align: center;
+    margin-top: 10px;
+}
+
+section span{
+
+    background-color: var(--primary);
+    border: solid 1px black;
+    border-radius: 4px;
+    padding: 5px 10px 5px 10px;
+    display: flex;
+    justify-content: center;
+}
+
+section span:hover{
+
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border: solid 1px black;
+    
+
+}
+
+section:hover{
+
+    opacity: 1;
+    cursor: pointer;
+    -webkit-transform: scale(1.0);
+	transform: scale(1.3);
+}
+
+
+section img{
+
+    width: 100%;
+    height: 150px;
+    border: 1px solid #cccbcb;
+
+
+}
+
+.titleBoutiquesection{
+    font-size: 85px;
+    text-align: center;
+    position: flex;
+    justify-content: center;
+    background-color: none;
+    transition: none;
+    padding-top: 10%;
+
+}
+
+
+@media (min-width: 768px) and (max-width: 896px) {
+
+    article{
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-left: 5%;
+        margin-right: -17%;
+        margin-top: -45%;
+    }
+
+    section img{
+
+        width: 100%;
+        height: 80px;
+        border: 1px solid #cccbcb;
+    
+    
+    }
+
+
+    section{
+
+        width: 280px;
+        margin-top: 10%;
+        margin-left: 35%;
+        border-radius: 7px;
+        -webkit-transform: none !important;
+        transform: none !important;
+        -webkit-transition: none !important;
+        transition: none !important;
+        margin-bottom: 5%;
+        margin-right: 15%;
+    
+
+    }
+
+
+    .titleBoutiquesection{
+        font-size: 55px;
+        text-align: center;
+        position: flex;
+        justify-content: center;
+        background-color: none;
+        transition: none !important;
+        padding-top: 30%;
+    
+    }
+
+}
+
+
+@media screen and (max-width: 767px) {
+
+    article{
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-left: 5%;
+        margin-right: -17%;
+        margin-top: -75%;
+    }
+
+    section img{
+
+        width: 100%;
+        height: 80px;
+        border: 1px solid #cccbcb;
+    
+    
+    }
+
+
+    section{
+
+        width: 160px;
+        margin-top: 10%;
+        margin-left: 35%;
+        border-radius: 7px;
+        -webkit-transform: none !important;
+        transform: none !important;
+        -webkit-transition: none !important;
+        transition: none !important;
+        margin-bottom: 5%;
+        margin-right: 15%;
+    
+
+    }
+
+
+    .titleBoutiquesection{
+        font-size: 55px;
+        text-align: center;
+        position: flex;
+        justify-content: center;
+        background-color: none;
+        transition: none !important;
+        padding-top: 30%;
+    
+    }
+
+}
