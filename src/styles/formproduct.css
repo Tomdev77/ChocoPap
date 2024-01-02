@@ -5,24 +5,6 @@
   
 
 
-.containerForm{
-
-
-width: 50px !important;
-border: solid 1px  ;
-margin-top: 0 !important;
-position: relative;
-top: 60px;
-border-radius: 5px;
-background-color: rgb(202, 202, 202);
-color: rgb(10, 10, 10);
-margin-left: -0%;
-
-
-
-
-
-}
 
 label{
 
@@ -45,6 +27,11 @@ h4{
     margin-left: 15px;
 }
 
+.categoriepanel{
+
+    margin-left: 10px;
+}
+
 .categ, .prix{
 
     text-decoration: underline;
@@ -61,23 +48,6 @@ h4{
     width: 100px;
 }
 
-.filterdisplayproducts{
-
-    width: 380px !important;
-    padding-left: 10px;
-    margin-top: -25% !important;
-    text-align: justify;
-    position: sticky;
-    top: 91px;
-    font-size:12px;
-    margin-top: -10%;
-    height: 610px;
-    background-color: white;
-    color: rgb(14, 13, 13);
-    float: right;
-    display: flex;
-    flex-wrap: wrap;
-}
 
 #learnmorefilter{
 
@@ -85,20 +55,9 @@ h4{
     color: white;
     padding: 1% 2% 2% 5%;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 10px;
     
     
-}
-
-.filterdisplayproducts> li{
-
-    padding-left: 15px;
-    font-size: 15px;
-    width: 150;
-    height: 100;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
 }
 
 
@@ -159,27 +118,6 @@ h4{
   .show-filter {
     transform: translateY(0);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,174 +1,255 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import "../styles/chocolat.css";
+import PanierContext from "../store/panier-context";
 
 
 export default function Chocolat() {
 
-  const [chocolats, setchocolats] = useState([]);
-  const [filtre, setFiltre] = useState('');
-  const [prixMin, setPrixMin] = useState('');
-  const [prixMax, setPrixMax] = useState('');
+  
+  const [chocolats, setChocolats] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [prixMin, setPrixMin] = useState("");
+  const [prixMax, setPrixMax] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [noteMin, setNoteMin] = useState("");
+  const [noteMax, setNoteMax] = useState("");
 
 
+  // récolte des données du fichier json et interprétation de ce des données en affichage 
+  // calcul les catégories uniques à partir des données récupéres 
 
   useEffect(() => {
-    fetch('data.json')
-      .then(response => response.json())
-      .then(data => setchocolats(data.chocolats))
-      .catch(error => console.log(error))
+    fetch("data.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setChocolats(data.chocolats);
+        const uniqueCategories = Object.keys(
+          data.chocolats.reduce((acc, chocolat) => {
+            return { ...acc, ...chocolat.category };
+          }, {})
+        );
+
+
+// ajout nouvelle category à la liste des categories uniques
+
+        const newCategory = "Tous les produits";
+        const updatedUniqueCategories = [newCategory, ...uniqueCategories];
+        setCategories(updatedUniqueCategories);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  const filterText = filtre && typeof filtre === 'string' ? filtre.toLowerCase() : '';
-  const chocolat = chocolats.filter((v) => 
-      v.title.toLowerCase().includes(filterText)
-  );
 
-  const [isFilterActive, setFilteredactive] = useState(false); // This line defines the state variables
 
-  const toggleFilter = () => {
-    setFiltre(chocolats);  
-    setFilteredactive(prevState => !prevState);  
-};
-   // Fonction pour le champ texte
-   const handleTextFilterChange = (event) => {
-    setFiltre(event.target.value);
 
-  };
+  //  mise en place filtre prix min et prix max
 
+  console.log(categories);
   const handlePrixMinChange = (e) => {
     setPrixMin(e.target.value);
   };
-
   const handlePrixMaxChange = (e) => {
     setPrixMax(e.target.value);
   };
 
-  const filteredChocolats = chocolats.filter(v => {
-    const price = parseFloat(v.price);
-    if (prixMin && prixMax) {
-      return price >= parseFloat(prixMin) && price <= parseFloat(prixMax);
-    } else if (prixMin) {
-      return price >= parseFloat(prixMin);
-    } else if (prixMax) {
-      return price <= parseFloat(prixMax);
+
+  //  mise en place filtre Note min et Note max
+
+  console.log(categories);
+  const handleNoteMinChange = (e) => {
+    setNoteMin(e.target.value);
+  };
+  const handleNoteMaxChange = (e) => {
+    setNoteMax(e.target.value);
+  };
+
+
+// fonction qui semble changer l'état de selection d'une catégorie . si elle est slectionnée , elle est déslectionnées et si elle est déselectionnée , elle est selectionnée.
+// si une autre catégorie est sélectionnée et que "tous les produits" est sélectionnée, "tous les produits" est déselectionnée
+  const handleCategoryChange = (category) => {
+    let updatedCategories;
+    if (category === "Tous les produits") {
+      updatedCategories = selectedCategories.includes(category)
+        ? []
+        : ["Tous les produits"];
+    } else {
+      updatedCategories = [...selectedCategories];
+      const index = updatedCategories.indexOf(category);
+      if (index === -1) {
+        updatedCategories.push(category);
+      } else {
+        updatedCategories.splice(index, 1);
+      }
+      const tousLesProduitsIndex =
+        updatedCategories.indexOf("Tous les produits");
+      if (tousLesProduitsIndex !== -1) {
+        updatedCategories.splice(tousLesProduitsIndex, 1);
+      }
     }
-    return true;
-  });
+    setSelectedCategories(updatedCategories);
+    console.log(updatedCategories);
+  };
 
 
-  const highRatedChocolats = chocolat.filter(v => v.note > 4);
+// selection du tableau chocolats, la condition vérifie si selected categories inclut tous les produits . une cotégorie est sélectionnée ou toutes les catégorie.
+
+const filteredChocolats = chocolats.filter((chocolat) => {
+  const isTousLesProduitsSelected =
+    selectedCategories.includes("Tous les produits");
+  const isCategoryMatch =
+    isTousLesProduitsSelected ||
+    selectedCategories.length === 0 ||
+    selectedCategories.some((category) => chocolat.category[category]);
+
+        // filtrage catégorie produit et fourchette de prix => si chocolat remplit les deux condtions alors il sera affiché dans le tableau
+
+
+        const isPriceInRange =
+        (prixMin === "" || chocolat.price >= parseFloat(prixMin)) &&
+        (prixMax === "" || chocolat.price <= parseFloat(prixMax));
+
 
   
+        // filtrage catégorie produit et fourchette de notes => si chocolat remplit les deux condtions alors il sera affiché dans le tableau
+
+
+        const isNoteInRange =
+        (noteMin === "" || chocolat.note >= parseFloat(noteMin)) &&
+        (noteMax === "" || chocolat.note <= parseFloat(noteMax));
+
+        return isCategoryMatch && isPriceInRange && isNoteInRange;});
+
+
+        // bouton de reinitialisation à 0 , filtrage prix + filtrage note
+
+        const handleReset = () => {
+  
+        
+          setPrixMin("");
+          setPrixMax("");
+          setNoteMin("");
+          setNoteMax("");
+          
+        setSelectedCategories([]);
+        };
+
+        const [cart, setCart] = useState({});
+
+        const handleAddToCart = (chocolatId) => {
+          setCart((prevCart) => ({
+            ...prevCart,
+            [chocolatId]: (prevCart[chocolatId] || 0) + 1,
+          }));
+        };
+
+        //const handleValidateCart = () => {
+          //alert("Votre panier a été validé avec succès !");
+        //};
+        //<button onClick={handleValidateCart}>Valider le panier</button>
+
+        const handleEmptyCart = () => {
+          setCart({});
+        };
+
+        const{addItemToCart}=useContext(PanierContext);
+       // const{removeFromCart}=useContext(PanierContext);
+
+        
+      // Style pour l'affichage de l'image
 
   return (
-
-    <>
     
-    <div className="containerForm">
-      <h4>Filtre </h4>
-      <div className="categoriepanel">
+    <>
+      <div className="containerForm">
+        <h4>Filtre </h4>
+        <div className="categoriepanel">
+          <h4>Catégorie </h4>
 
-      <input type="text" placeholder="Filtrer par titre..." value={filtre} onChange={handleTextFilterChange} required /><br/>
+          {categories.map((category) => (
+            <div key={category}>
+              <input
+                type="checkbox"
+                id={`Panel1form_${category}`}
+                name={category}
+                checked={selectedCategories.includes(category)}
+                onChange={() => handleCategoryChange(category)}
+              />
+              <label htmlFor={`Panel1form_${category}`}>{category}</label>
+              <br />
+            </div>
+          ))}
 
-      <h4>Catégorie </h4>
-      
-      
-      <input type="checkbox"
-          id="Panel1form"
-          name="ChocolatBlanc"
-          onClick={() => toggleFilter("")} />
-        <label htmlFor="Panel1form"> Tous les produits</label><br />
+          <h4>Prix </h4>
+          <div>
+            <input
+              type="number"
+              placeholder="Prix minimum"
+              value={prixMin}
+              min="1"
+              max="50"
+              onChange={handlePrixMinChange}
+            />
+            <p>Prix Min</p>
+            <input
+              type="number"
+              placeholder="Prix maximum"
+              value={prixMax}
+              min="1"
+              max="50"
+              onChange={handlePrixMaxChange}
+            />
+            <p>Prix Max</p>
 
+            
+          </div>
 
-      
+          <h4>Notes </h4>
+          <div>
+            <input
+              type="number"
+              placeholder="Note minimum"
+              value={noteMin}
+              min="1"
+              max="5"
+              onChange={handleNoteMinChange}
+            />
+            <p>Note Min</p>
+            <input
+              type="number"
+              placeholder="Note maximum"
+              value={noteMax}
+              min="1"
+              max="5"
+              onChange={handleNoteMaxChange}
+            />
+            <p>Note Max</p>
+        {/* Bouton de réinitialisation */}
+      <span className="resetbutt" onClick={handleReset}>Reset all</span>
 
-        <input type="checkbox"
-          id="Panel1form"
-          name="ChocolatBlanc"
-          value="product"
-
-          onClick={() => setFiltre("Blanc Passion")} />
-        <label htmlFor="Panel1form"> Chocolat Blanc</label><br />
-
-
-        <input type="checkbox"
-          id="Panel1form"
-          name="Chocolat au lait"
-          value="product"
-          onClick={() => setFiltre("Fantaisie")} />
-        <label htmlFor="Panel1form"> Chocolat au lait</label><br />
-
-        <input type="checkbox"
-          id="Panel1form"
-          name="Chocolat noir"
-          value="product"
-          onClick={() => setFiltre("Noir Passion")} />
-        <label htmlFor="Panel1form"> Chocolat noir</label><br />
-
-        <input type="checkbox"
-          id="Panel1form"
-          name="Noix/Noisette"
-          value="product"
-          onClick={() => setFiltre("Douceur croquante")} />
-        <label htmlFor="Panel1form"> Noix/Noisette</label><br />
-
-        <input type="checkbox"
-          id="Panel1form"
-          name="Fruit"
-          value="product"
-          onClick={() => setFiltre("Coulis Fraise")} />
-        <label htmlFor="Panel1form"> Fruit</label><br />
-
-        <input type="checkbox"
-          id="Panel1form"
-          name="Caramel"
-          value="product"
-          onClick={() => setFiltre("Caramel Salé")} />
-        <label htmlFor="Panel1form"> Caramel</label><br />
-
-        <input type="checkbox"
-          id="Panel1form"
-          name="Liqueur"
-          value="product"
-          onClick={() => setFiltre("Douceur exotique")} />
-        <label htmlFor="Panel1form"> Liqueur</label><br />
-
-        <h4>Prix </h4>
-        <div>
-        <input
-          type="number"
-          placeholder="Prix minimum"
-          value={prixMin}
-          min="1" max="50" // Adjust max value as per your needs
-          onChange={handlePrixMinChange} />
-        <p>Prix Min</p>
-        <input
-          type="number"
-          placeholder="Prix maximum"
-          value={prixMax}
-          min="1" max="50" // Adjust max value as per your needs
-          onChange={handlePrixMaxChange} />
-        <p>Prix Max</p>
+            
+          </div>
+        </div>
       </div>
 
-      </div>
-    </div>
+      <article>
+        {filteredChocolats.map((chocolat) => (
+          <section key={chocolat.id}>
+            <img src={require(`../images/${chocolat.image}`)} alt="imgjson" />
+            <h2>{chocolat.title}</h2>
+            <p>prix : {chocolat.price} €</p>
+            <p>Note clients : {chocolat.note}</p>
 
-    <article>
-  {/* Boucle pour le tableau "chocolat" */}
-  {chocolat.map(v => (
-    <section key={v.id}>
-      <img src={require(`../images/${v.image}`)} alt="imgjson" />
-      <h2>{v.title}</h2>
-      <p>prix : {v.price} €</p>
-      <p>Note clients : {v.note}</p>
-      <span>Ajout au panier</span>
-    </section>
-  ))}
+             {/* Compteur et bouton d'ajout au panier */}
+             <div>
+             <span className="buttvalidate"onClick={() => addItemToCart(chocolat.id)}>Ajouter au panier</span>
+            
+              </div>
 
-</article>
+          
 
+          </section>
+        ))}
+      </article>
     </>
   );
 }

@@ -5,6 +5,7 @@
 
 .boxparentfooter {
     background-color: #0a0a0a;
+    margin-top: 15%;
     height: 155px;
     display: flex;
     flex-wrap: wrap;

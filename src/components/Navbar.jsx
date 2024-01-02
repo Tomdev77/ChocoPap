@@ -1,15 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import "../styles/Navbar.css";
+import "../styles/chocolat.css";
+import PanierContext from "../store/panier-context";
+import CartModal from "../components/CartModal";
 // import "../styles/Bootstrap.css";
 
 function Navbar() {
   const [showLinks, setshowLinks] = useState(false); // menu fermer par défault
-
+  const [color, setColor] = useState(false); 
+  
   const handleShowLinks = () => {
     setshowLinks(!showLinks); // activation du sholinks si true sinon false
   };
 
-  const [color, setColor] = useState(false); // changer couleur au scroll de la navbar
+const {items}= useContext(PanierContext);
+  
+const modalRef = useRef();
+
+const handlOpenCart =()=>{
+
+  modalRef.current.open();
+
+}
+
+  // changer couleur au scroll de la navbar
 
   const changeColor = () => {
     setColor(window.scrollY >= 90);
@@ -24,6 +38,8 @@ function Navbar() {
 
 
   return (
+    <>
+    <CartModal ref={modalRef} />
     <nav className={color ? 'fixed navbar navbar-bg' : 'fixed navbar'}>
     <nav className={`fixed navbar ${showLinks ? "show-nav" : "hide-nav"} `}>
       <div className="navbar_logo ">
@@ -44,11 +60,7 @@ function Navbar() {
             Boutique
           </a>
         </li>
-        <li className="navbar_item slideInDown-3">
-          <a href="/" className="navbar_link">
-            Panier
-          </a>
-        </li>
+  
         <li className="navbar_item slideInDown-4">
           <img
             id="logomenucovermobile"
@@ -56,14 +68,19 @@ function Navbar() {
             alt="logomobilecover"
           />
         </li>
-        <li className="navbar_item">
-          <img id="panier" src={require("../images/panier.png")} alt="panier" />
-        </li>
+        <li className="navbar_item">        
+    <div>
+    <span onClick={handlOpenCart} class="badge text-bg-success">({items.length})</span>
+        <img id="panier" src={require("../images/panier.png")} alt="panier" />
+      </div>
+    </li>
       </ul>
       <button className="navbar_burger"></button>
       <div className="burger-bar" onClick={handleShowLinks}></div>
-      </nav></nav>
-  );
-}
+      </nav>
+      </nav>
+      </>
+  );}
+
 
 export default Navbar;

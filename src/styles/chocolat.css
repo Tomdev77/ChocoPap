@@ -3,26 +3,53 @@ article{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: -20% 15% 15% 15%;
+    margin: -35% 15% 15% 15%;
 }
 
 .containerForm{
 
 
-    width: 350px !important;
-    height: 550px;
-    border: solid 1px  ;
+    width: 330px !important;
+    height: 785px;
     margin-top: 25% !important;
     position: sticky!important;
-    top: 95px !important;
+    top: 105px !important;
+    bottom: -25% !important;
+    color: black;
+    border: solid 2px rgb(218, 218, 218);
     border-radius: 5px;
-    background-color: rgb(202, 202, 202);
-    color: rgb(10, 10, 10);
-    padding: 5px 5px 5px 5px;
+    padding: 2px 2px 5px 25px;
     margin-left: 8%;
     margin-right: 10%;
+    font-size: 20px;
+    background-color: #ffffff;
+    margin-bottom: 15%;
     
 }
+
+
+.buttempty, .buttvalidate{
+
+    width: 300px;
+    margin-right: 5px;
+    background-color: var(--primary);
+    text-align: center;
+
+}
+
+.resetbutt{
+
+    border-radius: 5px;
+    border: solid 1px;
+    padding: 5px 15px 5px 5px;
+    cursor: pointer;
+    background-color: var(--primary);
+    color: white;
+    
+    
+}
+
+
   
 h4{
 
@@ -60,7 +87,6 @@ h4{
 }
     
 
-
 section{
 
     width: 350px;
@@ -71,12 +97,10 @@ section{
     border-radius: 7px;
     opacity: 0.5;
     color: white;
-    -webkit-transform: scale(1);
-	transform: scale(1);
-	-webkit-transition: .3s ease-in-out;
-	transition: .3s ease-in-out;
     margin-bottom: 5%;
     margin-left: 15%;
+    transition: transform 1s; /* Animation */
+
 
 
 }
@@ -111,9 +135,10 @@ section:hover{
 
     opacity: 1;
     cursor: pointer;
-    -webkit-transform: scale(1.0);
-	transform: scale(1.3);
+    transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
+
+
 
 
 section img{
